@@ -17,7 +17,6 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     private var storageProvider: StorageProvider? = null
 
     private val articlesStateObserver: Observer<ArticlesState> = Observer {
-        temp()
         when (it) {
             is ArticlesState.LoadingState -> handleArticleStateChangeToLoading(it)
             is ArticlesState.ErrorState -> handleArticleStateChangeToError(it)
@@ -35,10 +34,6 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
         if (articlesFromNetwork.articles.isNotEmpty()) {
             storageProvider?.store(articlesFromNetwork.articles)
         }
-    }
-
-    fun temp() {
-
     }
 
     fun setNewsRepository(newsRepository: NewsRepository) {
