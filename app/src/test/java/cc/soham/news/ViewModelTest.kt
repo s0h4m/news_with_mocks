@@ -21,10 +21,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
-
-
-
-
 @RunWith(MockitoJUnitRunner::class)
 class ViewModelTest {
     @Mock
