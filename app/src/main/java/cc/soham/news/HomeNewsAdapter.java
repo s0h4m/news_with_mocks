@@ -1,7 +1,6 @@
 package cc.soham.news;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import cc.soham.news.model.Article;
 import cc.soham.news.utils.DateUtils;
 
@@ -34,7 +34,6 @@ public class HomeNewsAdapter extends RecyclerView.Adapter<HomeNewsAdapter.HomeNe
     public void onBindViewHolder(HomeNewsViewHolder holder, final int position) {
         Article newsArticle = newsArticles.get(position);
         Glide.with(holder.cardImageView.getContext()).load(newsArticle.getUrlToImage())
-                .centerCrop()
                 .into(holder.cardImageView);
         holder.cardTitleTextView.setText(newsArticle.getTitle());
         holder.cardTimeTextView.setText(DateUtils.formatNewsApiDate(newsArticle.getPublishedAt()));

@@ -1,8 +1,8 @@
 package cc.soham.news
 
 import android.app.Application
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.MutableLiveData
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import cc.soham.news.model.Article
 import cc.soham.news.networking.NewsRepository
@@ -15,10 +15,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
-import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -55,7 +52,8 @@ class ViewModelTest {
     fun viewModelArticleState_validNetworkResponse_storesProperly() {
         // arrange
         var articlesState: MutableLiveData<ArticlesState> = MutableLiveData()
-        Mockito.`when`(newsRepository.getNewsArticles(Mockito.anyString(), Mockito.anyString())).thenReturn(articlesState)
+        Mockito.`when`(newsRepository.getNewsArticles(Mockito.anyString(),
+                Mockito.anyString())).thenReturn(articlesState)
         var arrayOfArticles = arrayListOf(Article(), Article())
 
         // act

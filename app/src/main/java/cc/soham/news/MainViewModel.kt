@@ -1,9 +1,9 @@
 package cc.soham.news
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import cc.soham.news.networking.NewsRepository
 import cc.soham.news.networking.RealNewsRepository
 import cc.soham.news.storage.StorageProvider
@@ -15,6 +15,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
     private var sortBy: String = "top"
     private var newsRepository: NewsRepository? = null
     private var storageProvider: StorageProvider? = null
+    var mainIdlingResource: MainIdlingResource? = null
 
     private val articlesStateObserver: Observer<ArticlesState> = Observer {
         when (it) {
@@ -56,6 +57,7 @@ open class MainViewModel(application: Application) : AndroidViewModel(applicatio
         if (articlesState.value == null) {
             // if we haven't updated the articles state, get it from the repository and observe it
             articlesState = newsRepository!!.getNewsArticles(newsSource, sortBy)
+            mainIdlingResource = MainIdlingResource(articlesState)
             observeArticlesState()
         }
         return articlesState

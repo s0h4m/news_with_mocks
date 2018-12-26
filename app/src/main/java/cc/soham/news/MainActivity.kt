@@ -1,27 +1,27 @@
 package cc.soham.news
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
-    lateinit var mainViewModel: MainViewModel
+    val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        activity_main_recyclerview.setLayoutManager(LinearLayoutManager(this));
+        activity_main_recyclerview.setLayoutManager(androidx.recyclerview.widget.LinearLayoutManager(this));
 
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         mainViewModel.getArticlesState().observe(this, Observer {
             when (it) {
                 is ArticlesState.LoadingState -> handleArticleStateChangeToLoading(it)
@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         activity_main_progressbar?.visibility = View.VISIBLE
         Toast.makeText(this@MainActivity, "Loading", Toast.LENGTH_SHORT).show()
     }
+
     fun handleArticleStateChangeToError(errorState: ArticlesState.ErrorState) {
         activity_main_progressbar?.visibility = View.GONE
         Toast.makeText(this@MainActivity, "Error received", Toast.LENGTH_SHORT).show()
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showNewsApiSnack() {
-        Snackbar.make(activity_main, "Powered by NewsApi.org", Snackbar.LENGTH_LONG)
+        com.google.android.material.snackbar.Snackbar.make(activity_main, "Powered by NewsApi.org", com.google.android.material.snackbar.Snackbar.LENGTH_LONG)
                 .setAction("Visit") { loadNewsApiWebsite() }.show()
     }
 

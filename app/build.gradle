@@ -21,7 +21,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -36,67 +36,70 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
+    }
+    packagingOptions {
+        exclude 'mockito-extensions/org.mockito.plugins.MockMaker'
+        exclude 'org/powermock/default.properties'
     }
 }
 
-configurations.all {
-    resolutionStrategy.force "com.android.support:support-annotations:$supportLibraryVersion"
-    resolutionStrategy.force "com.android.support:customtabs:$supportLibraryVersion"
-    resolutionStrategy.force "com.android.support:support-v13:$supportLibraryVersion"
-    resolutionStrategy.force "com.android.support:support-v4:$supportLibraryVersion"
-    resolutionStrategy.force "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    resolutionStrategy.force "com.android.support:appcompat-v7:$supportLibraryVersion"
-    resolutionStrategy.force "com.android.support:support-fragment:$supportLibraryVersion"
-}
-
-
 dependencies {
-    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
-    implementation 'com.android.support:cardview-v7:28.0.0-alpha3'
-    implementation 'com.android.support:percent:28.0.0-alpha3'
-    implementation 'com.android.support:recyclerview-v7:28.0.0-alpha3'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.percentlayout:percentlayout:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'com.google.code.gson:gson:2.7'
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
-    implementation 'com.android.support:design:28.0.0-alpha3'
+    implementation 'com.google.android.material:material:1.1.0-alpha02'
     testImplementation 'junit:junit:4.12'
 
     testImplementation 'org.mockito:mockito-core:2.23.4'
 
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude group: 'com.android.support', module: 'design'
-        exclude group: 'com.android.support', module: 'recyclerview-v7'
-    }
-
     def lifecycle_version = "1.1.1"
 
     // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01'
     // alternatively - just ViewModel
-    implementation "android.arch.lifecycle:viewmodel:$lifecycle_version" // use -ktx for Kotlin
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0-alpha01' // use -ktx for Kotlin
     // alternatively - just LiveData
-    implementation "android.arch.lifecycle:livedata:$lifecycle_version"
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.1.0-alpha01'
     // alternatively - Lifecycles only (no ViewModel or LiveData).
     //     Support library depends on this lightweight import
-    implementation "android.arch.lifecycle:runtime:$lifecycle_version"
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.1.0-alpha01'
 
-    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version" // use kapt for Kotlin
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.1.0-alpha01' // use kapt for Kotlin
     // alternately - if using Java8, use the following instead of compiler
-    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.1.0-alpha01'
 
     // optional - ReactiveStreams support for LiveData
-    implementation "android.arch.lifecycle:reactivestreams:$lifecycle_version"
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.1.0-alpha01'
 
     // optional - Test helpers for LiveData
-    testImplementation "android.arch.core:core-testing:$lifecycle_version"
+    testImplementation 'androidx.arch.core:core-testing:2.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Koin for Kotlin apps
+    compile 'org.koin:koin-core:1.0.2'
+    compile 'org.koin:koin-android-viewmodel:1.0.2'
+    testCompile 'org.koin:koin-test:1.0.2'
 
     // for Android:
     testImplementation 'org.amshove.kluent:kluent-android:1.44'
+
+    testImplementation 'org.robolectric:robolectric:4.2-SNAPSHOT'
+
+    androidTestImplementation 'androidx.test:core:' + rootProject.coreVersion
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:' + rootProject.espressoVersion
+    androidTestImplementation 'androidx.test.ext:junit:' + rootProject.extJUnitVersion
+    androidTestImplementation 'androidx.test:runner:' + rootProject.runnerVersion
+    androidTestImplementation 'androidx.test.espresso:espresso-core:' + rootProject.espressoVersion;
+    // Note that espresso-idling-resource is used in the code under test.
+    implementation 'androidx.test.espresso:espresso-idling-resource:' + rootProject.espressoVersion;
 }
 
 apply plugin: 'com.google.gms.google-services'
