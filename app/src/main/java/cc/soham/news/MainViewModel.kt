@@ -8,8 +8,9 @@ import cc.soham.news.networking.NewsRepository
 import cc.soham.news.networking.RealNewsRepository
 import cc.soham.news.storage.StorageProvider
 import cc.soham.news.storage.TemporaryStorageProvider
+import javax.inject.Inject
 
-open class MainViewModel(application: Application) : AndroidViewModel(application) {
+open class MainViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
     private var articlesState: MutableLiveData<ArticlesState> = MutableLiveData()
     private var newsSource: String = "espn"
     private var sortBy: String = "top"

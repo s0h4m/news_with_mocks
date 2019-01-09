@@ -63,6 +63,28 @@ class MainActivityTest : KoinTest {
         mainActivity.activity_main_recyclerview.adapter!!.itemCount shouldEqualTo 2
     }
 
+    @Test
+    fun base_activity_shouldNotBeNull1() {
+        // create a mock state that we can return from the viewmodel
+        var articlesState: MutableLiveData<ArticlesState> = MutableLiveData()
+        var arrayOfArticles = listOf(Article(), Article())
+        articlesState.value = ArticlesState.ArticlesFromNetwork(arrayOfArticles)
+        Mockito.`when`(mainViewModel.getArticlesState()).thenReturn(articlesState)
+
+        // start the activity
+        var mainActivity: MainActivity = Robolectric.buildActivity(MainActivity::class.java)
+                .create()
+                .resume()
+                .start()
+                .visible()
+                .get()
+
+        // the recyclerview adapter should not be null
+        mainActivity.activity_main_recyclerview.adapter shouldNotBe null
+        // the number of items should be two
+        mainActivity.activity_main_recyclerview.adapter!!.itemCount shouldEqualTo 2
+    }
+
     @After
     fun shutDown() {
         stopKoin()
