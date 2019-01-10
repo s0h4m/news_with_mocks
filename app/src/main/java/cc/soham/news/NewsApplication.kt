@@ -3,6 +3,7 @@ package cc.soham.news
 import android.app.Application
 import android.app.Activity
 import cc.soham.news.di.AppComponent
+import cc.soham.news.di.AppModule
 import cc.soham.news.di.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -15,7 +16,7 @@ class NewsApplication : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.builder().application(this).build()
+        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
         appComponent.inject(this)
     }
     override fun activityInjector(): DispatchingAndroidInjector<Activity> {
