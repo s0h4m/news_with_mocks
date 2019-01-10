@@ -5,17 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import cc.soham.news.networking.NewsRepository
-import cc.soham.news.networking.RealNewsRepository
 import cc.soham.news.storage.StorageProvider
-import cc.soham.news.storage.TemporaryStorageProvider
 import javax.inject.Inject
 
-open class MainViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
+open class MainViewModel @Inject constructor(application: Application, private val newsRepository: NewsRepository?, private val storageProvider: StorageProvider?) : AndroidViewModel(application) {
     private var articlesState: MutableLiveData<ArticlesState> = MutableLiveData()
     private var newsSource: String = "espn"
     private var sortBy: String = "top"
-    private var newsRepository: NewsRepository? = null
-    private var storageProvider: StorageProvider? = null
     var mainIdlingResource: MainIdlingResource? = null
 
     private val articlesStateObserver: Observer<ArticlesState> = Observer {
@@ -38,23 +34,7 @@ open class MainViewModel @Inject constructor(application: Application) : Android
         }
     }
 
-    fun setNewsRepository(newsRepository: NewsRepository) {
-        this.newsRepository = newsRepository
-    }
-
-    fun setStorageProvider(storageProvider: StorageProvider) {
-        this.storageProvider = storageProvider
-    }
-
     fun getArticlesState(): MutableLiveData<ArticlesState> {
-        if (newsRepository == null) {
-            // initialise a news repository
-            newsRepository = RealNewsRepository()
-        }
-        if (storageProvider == null) {
-            // initialise a storage provider
-            storageProvider = TemporaryStorageProvider()
-        }
         if (articlesState.value == null) {
             // if we haven't updated the articles state, get it from the repository and observe it
             articlesState = newsRepository!!.getNewsArticles(newsSource, sortBy)
